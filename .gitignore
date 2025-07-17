@@ -1,0 +1,21 @@
+/target/
+
+# Fichiers de logs ou temporaires
+**/*.rs.bk
+**/*.swp
+**/*.tmp
+
+# Fichiers générés par Cargo
+Cargo.lock
+build
+
+# Fichiers spécifiques à l’éditeur
+.idea/
+.vscode/
+*.log
+
+.env
+
+# OS
+.DS_Store
+Thumbs.db
