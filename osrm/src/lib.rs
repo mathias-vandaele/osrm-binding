@@ -54,12 +54,11 @@ mod tests {
     use crate::tables::Point;
     #[test]
     fn it_calculates_a_table_successfully() {
-        dotenvy::dotenv().expect("Le fichier .env n'a pas pu être lu.");
+        dotenvy::dotenv().expect(".env file could not be read");
         let path = std::env::var("OSRM_TEST_DATA_PATH")
-            .expect("Environment variable OSRM_TEST_DATA_PATH must be defined (ex: /data/maps/france)");
+            .expect("Environment variable OSRM_TEST_DATA_PATH must be defined with a french map");
         let engine = OsrmEngine::new(&*path, Algorithm::MLD).expect("Failed to initialize OSRM engine");
 
-        // 1. Setup the request
         let request = TableRequest {
             sources: vec![
                 Point { longitude: 2.3522, latitude: 48.8566 } // Paris
@@ -70,12 +69,10 @@ mod tests {
             ]
         };
 
-        // 2. Call the function
         let response = engine.table(request).expect("Table request failed");
 
         println!("{:?}", response.durations);
 
-        // 3. Assert the results
         assert_eq!(response.code, "Ok");
         assert_eq!(response.durations.len(), 1, "Should have 1 row for 1 source");
         assert_eq!(response.durations[0].len(), 2, "Should have 2 columns for 2 destinations");
