@@ -1,3 +1,11 @@
+mod algorithm;
+mod errors;
+mod tables;
+mod trip;
+mod point;
+mod route;
+mod waypoints;
+mod osrm_engine;
 // src/lib.rs
 use std::ffi::{c_void, CStr, CString};
 use std::os::raw::c_char;
