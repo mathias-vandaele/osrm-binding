@@ -1,4 +1,4 @@
-# osrm-rs
+# osrm-binding
 
 Rust bindings for [OSRM (Open Source Routing Machine)](http://project-osrm.org/), providing an idiomatic and type-safe interface to access OSRM core functionalities (`route`, `table`, `trip`) from Rust.
 
