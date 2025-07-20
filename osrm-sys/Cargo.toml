@@ -6,6 +6,3 @@ edition = "2024"
 [build-dependencies]
 cmake = "0.1.54"
 cc = "1.2.29"
-[dependencies]
-serde = { version = "1.0.219", features = ["derive"] }
-serde_json = "1.0.140"
