@@ -1,11 +1,11 @@
-mod algorithm;
-mod errors;
-mod tables;
-mod trip;
-mod point;
-mod route;
-mod waypoints;
-mod osrm_engine;
+pub mod algorithm;
+pub mod errors;
+pub mod tables;
+pub mod trip;
+pub mod point;
+pub mod route;
+pub mod waypoints;
+pub mod osrm_engine;
 // src/lib.rs
 use std::ffi::{c_void, CStr, CString};
 use std::os::raw::c_char;
@@ -44,12 +44,12 @@ unsafe extern "C" {
     fn osrm_free_string(s: *mut c_char);
 }
 
-pub struct Osrm {
+pub(crate) struct Osrm {
     instance: *mut c_void,
 }
 
 impl Osrm {
-    pub fn new(base_path: &str, algorithm: &str) -> Result<Self, String> {
+    pub(crate) fn new(base_path: &str, algorithm: &str) -> Result<Self, String> {
         let c_path = CString::new(base_path).map_err(|e| e.to_string())?;
         let c_algorithm = CString::new(algorithm).map_err(|e| e.to_string())?;
         let instance = unsafe { osrm_create(c_path.as_ptr(), c_algorithm.as_ptr()) };
@@ -61,7 +61,7 @@ impl Osrm {
         }
     }
 
-    pub fn trip(&self, coordinates: &[(f64, f64)]) -> Result<String, String> {
+    pub(crate) fn trip(&self, coordinates: &[(f64, f64)]) -> Result<String, String> {
 
         let coords : Vec<f64> = coordinates.iter().flat_map(|&(lon, lat)| vec![lon, lat]).collect();
         let result = unsafe {
@@ -87,7 +87,7 @@ impl Osrm {
         Ok(rust_str)
     }
 
-    pub fn route(&self, coordinates: &[(f64, f64)]) -> Result<String, String> {
+    pub(crate) fn route(&self, coordinates: &[(f64, f64)]) -> Result<String, String> {
 
         let coords : Vec<f64> = coordinates.iter().flat_map(|&(lon, lat)| vec![lon, lat]).collect();
         let result = unsafe {
@@ -113,7 +113,7 @@ impl Osrm {
         Ok(rust_str)
     }
 
-    pub fn table(
+    pub(crate) fn table(
         &self,
         coordinates: &[(f64, f64)],
         sources: Option<&[usize]>,
