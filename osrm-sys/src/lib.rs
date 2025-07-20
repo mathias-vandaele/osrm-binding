@@ -1,7 +1,6 @@
 // src/lib.rs
 use std::ffi::{c_void, CStr, CString};
 use std::os::raw::c_char;
-use std::ptr::from_mut;
 
 #[repr(C)]
 struct OsrmResult {

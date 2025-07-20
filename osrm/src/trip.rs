@@ -1,6 +1,8 @@
+use derive_builder::Builder;
 use serde::Deserialize;
 use crate::point::Point;
 
+#[derive(Debug, Builder)]
 pub struct TripRequest {
     pub points : Vec<Point>,
 }
