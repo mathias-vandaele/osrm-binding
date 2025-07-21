@@ -25,7 +25,9 @@ fn main() {
     let cxx_flags = "-Wno-array-bounds -Wno-uninitialized -Wno-stringop-overflow -std=c++17";
 
     let dst = cmake::Config::new(&osrm_source_path)
-        .env("CXXFLAGS", cxx_flags) 
+        .env("CXXFLAGS", cxx_flags)
+        .define("CMAKE_CXX_STANDARD", "17")
+        .define("CMAKE_CXX_STANDARD_REQUIRED", "ON")
         .build();
 
     cc::Build::new()
