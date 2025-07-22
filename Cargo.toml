@@ -21,6 +21,7 @@ derive_builder = "0.20.2"
 dotenvy = "0.15.7"
 
 [build-dependencies]
+num_cpus = "1.16"
 cmake = "0.1.54"
 cc = "1.2.29"
 reqwest = { version="0.12.22", features = ["blocking"] }

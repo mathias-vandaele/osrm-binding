@@ -23,11 +23,18 @@ fn main() {
     eprintln!("OSRM source path: {}", osrm_source_path.display());
 
     let cxx_flags = "-Wno-array-bounds -Wno-uninitialized -Wno-stringop-overflow -std=c++17";
+    let num_cores = num_cpus::get();
 
     let dst = cmake::Config::new(&osrm_source_path)
+        .env("MAKEFLAGS", format!("-j{}", num_cores))
         .env("CXXFLAGS", cxx_flags)
         .define("CMAKE_CXX_STANDARD", "17")
+        .define("CMAKE_CXX_FLAGS_RELEASE", "-O3 -DNDEBUG -Wno-error")
         .define("CMAKE_CXX_STANDARD_REQUIRED", "ON")
+        .define("BUILD_TOOLS", "OFF")
+        .define("BUILD_TESTS", "OFF")
+        .define("ENABLE_LUA_TESTING", "OFF")
+        .define("ENABLE_SHARED", "OFF")
         .build();
 
     cc::Build::new()
