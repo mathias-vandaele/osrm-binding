@@ -2,7 +2,7 @@ use derive_builder::Builder;
 use crate::point::Point;
 use serde::{Deserialize, Serialize};
 use crate::waypoints::Waypoint;
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct RouteRequest {
     pub points : Vec<Point>,
 }

@@ -46,6 +46,16 @@ fn main() {
     let lib_path = dst.join("lib");
     println!("cargo:rustc-link-search=native={}", lib_path.display());
 
+    println!("cargo:rustc-link-lib=static=osrm_wrapper");
+    println!("cargo:rustc-link-lib=static=osrm");
+    println!("cargo:rustc-link-lib=static=osrm_store");
+    println!("cargo:rustc-link-lib=static=osrm_extract");
+    println!("cargo:rustc-link-lib=static=osrm_partition");
+    println!("cargo:rustc-link-lib=static=osrm_update");
+    println!("cargo:rustc-link-lib=static=osrm_guidance");
+    println!("cargo:rustc-link-lib=static=osrm_customize");
+    println!("cargo:rustc-link-lib=static=osrm_contract");
+
     println!("cargo:rustc-link-lib=dylib=boost_thread");
     println!("cargo:rustc-link-lib=dylib=boost_filesystem");
     println!("cargo:rustc-link-lib=dylib=boost_iostreams");
@@ -57,17 +67,6 @@ fn main() {
     println!("cargo:rustc-link-lib=dylib=bz2");
     println!("cargo:rustc-link-lib=dylib=expat");
 
-    println!("cargo:rustc-link-arg=-Wl,--start-group");
-    println!("cargo:rustc-link-lib=static=osrm_wrapper");
-    println!("cargo:rustc-link-lib=static=osrm");
-    println!("cargo:rustc-link-lib=static=osrm_store");
-    println!("cargo:rustc-link-lib=static=osrm_extract");
-    println!("cargo:rustc-link-lib=static=osrm_partition");
-    println!("cargo:rustc-link-lib=static=osrm_update");
-    println!("cargo:rustc-link-lib=static=osrm_guidance");
-    println!("cargo:rustc-link-lib=static=osrm_customize");
-    println!("cargo:rustc-link-lib=static=osrm_contract");
-    println!("cargo:rustc-link-arg=-Wl,--end-group");
 }
 
 fn find_osrm_source(path: &Path) -> PathBuf {

@@ -1,3 +1,4 @@
+use std::time::Instant;
 use osrm_binding::algorithm::Algorithm;
 use osrm_binding::osrm_engine::OsrmEngine;
 use osrm_binding::point::Point;
@@ -9,16 +10,27 @@ fn main() {
         .expect("Environment variable OSRM_TEST_DATA_PATH must be defined with a french map");
     let engine = OsrmEngine::new(&*path, Algorithm::MLD).expect("Failed to initialize OSRM engine");
 
-    let request = TableRequest {
-        sources: vec![
-            Point { longitude: 2.3522, latitude: 48.8566 } // Paris
-        ],
-        destinations: vec![
-            Point { longitude: 5.3698, latitude: 43.2965 }, // Marseille
-            Point { longitude: 4.8357, latitude: 45.7640 }  // Lyon
-        ]
-    };
-    let response = engine.table(request).expect("Table request failed");
+    let start = Instant::now();  // Capture start time
+    (0..100).for_each(|_| {
+        let request = TableRequest {
+            sources: vec![
+                Point { longitude: 2.3522, latitude: 48.8566 } // Paris
+            ],
+            destinations: vec![
+                Point { longitude: 5.3698, latitude: 43.2965 }, // Marseille
+                Point { longitude: 4.8357, latitude: 45.7640 }  // Lyon
+            ]
+        };
+        let _ = engine.table(request).expect("Table request failed");
+    });
+    let duration = start.elapsed();  // Calculate the elapsed time
+    println!("Time taken for 100 tables: {:?}", duration);
 
-    println!("{:?}", response.durations);
+    let start = Instant::now();  // Capture start time
+    (0..100).for_each(|_| {
+        let _ = engine.simple_route(Point { longitude: 2.3522, latitude: 48.8566 }, Point {  longitude: 5.3698, latitude: 43.2965 }).expect("route request failed");
+    });
+    let duration = start.elapsed();  // Calculate the elapsed time
+    println!("Time taken for 100 simple route: {:?}", duration);
+
 }
