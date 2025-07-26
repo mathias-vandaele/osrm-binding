@@ -1,27 +1,21 @@
 // osrm/src/lib.rs
 
-mod algorithm;
-mod errors;
-mod tables;
-mod trip;
-mod point;
-mod route;
-mod waypoints;
 
 use crate::errors::OsrmError;
+use crate::{algorithm, Osrm};
 use crate::point::Point;
 use crate::route::{RouteRequest, RouteResponse, SimpleRouteResponse};
 use crate::tables::{TableRequest, TableResponse};
 use crate::trip::{TripRequest, TripResponse};
 
 pub struct OsrmEngine {
-    instance: osrm_sys::Osrm,
+    instance: Osrm,
 }
 
 impl OsrmEngine {
 
     pub fn new(base_path: &str, algorithm : algorithm::Algorithm) -> Result<Self, OsrmError> {
-        let osrm = osrm_sys::Osrm::new(base_path, algorithm.as_str()).map_err( |_|  OsrmError::Initialization )?;
+        let osrm = Osrm::new(base_path, algorithm.as_str()).map_err( |_|  OsrmError::Initialization )?;
         Ok(OsrmEngine {
             instance: osrm,
         })
@@ -45,7 +39,7 @@ impl OsrmEngine {
         if len == 0 {
             return Err(OsrmError::InvalidTableArgument);
         }
-        let coordinates: &[(f64, f64)] =  &route_request.points.iter().map( |p|  (p.longitude, p.latitude) ).collect::<Vec<(f64, f64)>>()[..];
+        let coordinates: &[(f64, f64)] = &route_request.points.iter().map( |p|  (p.longitude, p.latitude) ).collect::<Vec<(f64, f64)>>()[..];
         let result = self.instance.route(coordinates).map_err( |e| OsrmError::FfiError(e))?;
         serde_json::from_str::<RouteResponse>(&result).map_err(|e| OsrmError::JsonParse(e))
     }
@@ -84,8 +78,8 @@ mod tests {
     #[test]
     fn it_calculates_a_table_successfully() {
         dotenvy::dotenv().expect(".env file could not be read");
-        let path = std::env::var("OSRM_TEST_DATA_PATH")
-            .expect("Environment variable OSRM_TEST_DATA_PATH must be defined with a french map");
+        let path = std::env::var("OSRM_TEST_DATA_PATH_MLD")
+            .expect("Environment variable OSRM_TEST_DATA_PATH_MLD must be defined with a french map");
         let engine = OsrmEngine::new(&*path, Algorithm::MLD).expect("Failed to initialize OSRM engine");
 
         let request = TableRequest {
@@ -111,8 +105,8 @@ mod tests {
     #[test]
     fn it_calculates_a_route_successfully() {
         dotenvy::dotenv().expect(".env file could not be read");
-        let path = std::env::var("OSRM_TEST_DATA_PATH")
-            .expect("Environment variable OSRM_TEST_DATA_PATH must be defined with a french map");
+        let path = std::env::var("OSRM_TEST_DATA_PATH_MLD")
+            .expect("Environment variable OSRM_TEST_DATA_PATH_MLD must be defined with a french map");
         let engine = OsrmEngine::new(&*path, Algorithm::MLD).expect("Failed to initialize OSRM engine");
 
         let request = RouteRequestBuilder::default().points(vec![Point { longitude: 2.3522, latitude: 48.8566 }, Point {  longitude: 5.3698, latitude: 43.2965 }]).build().expect("Failed to build RouteRequest");
@@ -129,8 +123,8 @@ mod tests {
     #[test]
     fn it_calculates_a_simple_route_successfully() {
         dotenvy::dotenv().expect(".env file could not be read");
-        let path = std::env::var("OSRM_TEST_DATA_PATH")
-            .expect("Environment variable OSRM_TEST_DATA_PATH must be defined with a french map");
+        let path = std::env::var("OSRM_TEST_DATA_PATH_MLD")
+            .expect("Environment variable OSRM_TEST_DATA_PATH_MLD must be defined with a french map");
         let engine = OsrmEngine::new(&*path, Algorithm::MLD).expect("Failed to initialize OSRM engine");
         let response = engine.simple_route(Point { longitude: 2.3522, latitude: 48.8566 }, Point {  longitude: 5.3698, latitude: 43.2965 }).expect("route request failed");
         assert_eq!(response.code, "Ok");

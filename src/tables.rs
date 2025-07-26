@@ -20,7 +20,7 @@ pub struct TableLocationEntry {
     distance: f64,
 }
 
-#[derive(Debug, Builder)]
+#[derive(Debug, Builder, Clone)]
 pub struct TableRequest{
     pub sources: Vec<Point>,
     pub destinations: Vec<Point>
