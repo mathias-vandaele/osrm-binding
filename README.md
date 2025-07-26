@@ -183,6 +183,30 @@ cargo test
 
 Ensure your `.osrm` file is prepared using `osrm-extract` and `osrm-contract`.
 
+### 🚀 Performance
+
+Native performance using `cargo bench`
+
+```shell
+calculate_multiple_routes_around_paris_10km_mld
+                        time:   [5.4872 ms 5.6545 ms 5.8246 ms]
+
+calculate_multiple_routes_around_paris_100km_mld
+                        time:   [13.063 ms 13.877 ms 14.652 ms]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) low mild
+
+calculate_multiple_routes_around_paris_10km_ch
+                        time:   [3.8034 ms 3.8599 ms 3.9175 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+calculate_multiple_routes_around_paris_100km_ch
+                        time:   [5.9891 ms 6.2444 ms 6.4946 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) low mild
+```
+
 ## 📖 License
 
 This project is licensed under the MIT License.

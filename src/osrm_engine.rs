@@ -78,8 +78,8 @@ mod tests {
     #[test]
     fn it_calculates_a_table_successfully() {
         dotenvy::dotenv().expect(".env file could not be read");
-        let path = std::env::var("OSRM_TEST_DATA_PATH")
-            .expect("Environment variable OSRM_TEST_DATA_PATH must be defined with a french map");
+        let path = std::env::var("OSRM_TEST_DATA_PATH_MLD")
+            .expect("Environment variable OSRM_TEST_DATA_PATH_MLD must be defined with a french map");
         let engine = OsrmEngine::new(&*path, Algorithm::MLD).expect("Failed to initialize OSRM engine");
 
         let request = TableRequest {
@@ -105,8 +105,8 @@ mod tests {
     #[test]
     fn it_calculates_a_route_successfully() {
         dotenvy::dotenv().expect(".env file could not be read");
-        let path = std::env::var("OSRM_TEST_DATA_PATH")
-            .expect("Environment variable OSRM_TEST_DATA_PATH must be defined with a french map");
+        let path = std::env::var("OSRM_TEST_DATA_PATH_MLD")
+            .expect("Environment variable OSRM_TEST_DATA_PATH_MLD must be defined with a french map");
         let engine = OsrmEngine::new(&*path, Algorithm::MLD).expect("Failed to initialize OSRM engine");
 
         let request = RouteRequestBuilder::default().points(vec![Point { longitude: 2.3522, latitude: 48.8566 }, Point {  longitude: 5.3698, latitude: 43.2965 }]).build().expect("Failed to build RouteRequest");
@@ -123,8 +123,8 @@ mod tests {
     #[test]
     fn it_calculates_a_simple_route_successfully() {
         dotenvy::dotenv().expect(".env file could not be read");
-        let path = std::env::var("OSRM_TEST_DATA_PATH")
-            .expect("Environment variable OSRM_TEST_DATA_PATH must be defined with a french map");
+        let path = std::env::var("OSRM_TEST_DATA_PATH_MLD")
+            .expect("Environment variable OSRM_TEST_DATA_PATH_MLD must be defined with a french map");
         let engine = OsrmEngine::new(&*path, Algorithm::MLD).expect("Failed to initialize OSRM engine");
         let response = engine.simple_route(Point { longitude: 2.3522, latitude: 48.8566 }, Point {  longitude: 5.3698, latitude: 43.2965 }).expect("route request failed");
         assert_eq!(response.code, "Ok");
